@@ -18,7 +18,17 @@ export class DefaultWrapper implements PickerWrapper {
     this.wrapper.style.zIndex = '99999';
   }
 
-  show({ x, y, width, height }: any) {
+  show({
+    x,
+    y,
+    width,
+    height,
+  }: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }) {
     if (this.wrapper) {
       this.wrapper.style.left = `${x}px`;
       this.wrapper.style.top = `${y}px`;

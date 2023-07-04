@@ -2,13 +2,23 @@ import { DefaultWrapper } from './DefaultWrapper';
 import { PickerWrapper } from './types';
 
 export class ElementPicker {
-  initialized: boolean = false;
+  private initialized: boolean = false;
+  private previousTarget: Element | null = null;
   wrapper: PickerWrapper | null = null;
-  onTargetChange: ((target: any) => void) | null = null;
-  onClick: ((target: any) => void) | null = null;
-  _previousTarget: any;
+  onTargetChange: ((target: Element) => void) | null = null;
+  onClick: ((target: Element) => void) | null = null;
 
-  constructor({ picking, wrapper, onTargetChange, onClick }: any) {
+  constructor({
+    picking,
+    wrapper,
+    onTargetChange,
+    onClick,
+  }: {
+    picking?: boolean;
+    wrapper?: PickerWrapper;
+    onTargetChange?: (target: Element) => void;
+    onClick?: (target: Element) => void;
+  }) {
     if (document.readyState === 'loading') {
       document.addEventListener(
         'DOMContentLoaded',
@@ -24,11 +34,24 @@ export class ElementPicker {
     }
   }
 
-  initialize({ picking, wrapper, onTargetChange, onClick }: any) {
+  private initialize({
+    picking,
+    wrapper,
+    onTargetChange,
+    onClick,
+  }: {
+    picking?: boolean;
+    wrapper?: PickerWrapper;
+    onTargetChange?: (target: Element) => void;
+    onClick?: (target: Element) => void;
+  }) {
     this.wrapper = wrapper ?? new DefaultWrapper();
-    this.onTargetChange = onTargetChange;
-    this.onClick = onClick;
-    this._previousTarget = null;
+    if (onTargetChange) {
+      this.onTargetChange = onTargetChange;
+    }
+    if (onClick) {
+      this.onClick = onClick;
+    }
 
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -40,11 +63,11 @@ export class ElementPicker {
     }
   }
 
-  handleMouseMove(event: MouseEvent) {
+  private handleMouseMove(event: MouseEvent) {
     const target = event.target as Element;
     const { x, y, width, height } = target?.getBoundingClientRect();
 
-    if (target !== this._previousTarget) {
+    if (target !== this.previousTarget) {
       if (!this.checkElementIfOddGlobal(target)) {
         this.wrapper?.show({ x, y, width, height }, target);
         this.onTargetChange?.(target);
@@ -52,16 +75,19 @@ export class ElementPicker {
         this.wrapper?.hide();
       }
 
-      this._previousTarget = target;
+      this.previousTarget = target;
     }
   }
 
-  handleClick(event: any) {
+  private handleClick(event: MouseEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+
     this.stopPicking();
-    this.onClick?.(event.target);
+    this.onClick?.(event.target as Element);
   }
 
-  waitForInitialization() {
+  private waitForInitialization() {
     const CHECK_INTERVAl = 100;
 
     return new Promise((resolve) => {
@@ -78,7 +104,7 @@ export class ElementPicker {
     });
   }
 
-  checkElementIfOddGlobal(element: any) {
+  private checkElementIfOddGlobal(element: Element) {
     return element === document.documentElement || element === document.body;
   }
 
