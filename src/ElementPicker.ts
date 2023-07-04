@@ -4,17 +4,20 @@ import { PickerWrapper } from './types';
 export class ElementPicker {
   private initialized: boolean = false;
   private previousTarget: Element | null = null;
+  container: Element | Document | null = null;
   wrapper: PickerWrapper | null = null;
   onTargetChange: ((target: Element) => void) | null = null;
   onClick: ((target: Element) => void) | null = null;
 
   constructor({
     picking,
+    container,
     wrapper,
     onTargetChange,
     onClick,
   }: {
     picking?: boolean;
+    container?: Element;
     wrapper?: PickerWrapper;
     onTargetChange?: (target: Element) => void;
     onClick?: (target: Element) => void;
@@ -24,28 +27,32 @@ export class ElementPicker {
         'DOMContentLoaded',
         this.initialize.bind(this, {
           picking,
+          container,
           wrapper,
           onTargetChange,
           onClick,
         })
       );
     } else {
-      this.initialize({ picking, wrapper, onTargetChange, onClick });
+      this.initialize({ picking, container, wrapper, onTargetChange, onClick });
     }
   }
 
   private initialize({
     picking,
+    container,
     wrapper,
     onTargetChange,
     onClick,
   }: {
     picking?: boolean;
+    container?: Element;
     wrapper?: PickerWrapper;
     onTargetChange?: (target: Element) => void;
     onClick?: (target: Element) => void;
   }) {
     this.wrapper = wrapper ?? new DefaultWrapper();
+    this.container = container ?? document;
     if (onTargetChange) {
       this.onTargetChange = onTargetChange;
     }
@@ -111,15 +118,19 @@ export class ElementPicker {
   async startPicking() {
     await this.waitForInitialization();
 
-    document.addEventListener('click', this.handleClick);
-    document.addEventListener('mousemove', this.handleMouseMove, false);
+    const container = this.container as HTMLElement;
+
+    container.addEventListener('click', this.handleClick);
+    container.addEventListener('mousemove', this.handleMouseMove, false);
   }
 
   async stopPicking() {
     await this.waitForInitialization();
 
-    document.removeEventListener('click', this.handleClick, false);
-    document.removeEventListener('mousemove', this.handleMouseMove, false);
+    const container = this.container as HTMLElement;
+
+    container.removeEventListener('click', this.handleClick, false);
+    container.removeEventListener('mousemove', this.handleMouseMove, false);
     this.wrapper?.hide();
   }
 }

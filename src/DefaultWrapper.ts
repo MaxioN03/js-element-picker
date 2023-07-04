@@ -11,7 +11,7 @@ export class DefaultWrapper implements PickerWrapper {
   initialize() {
     this.wrapper = document.createElement('div');
     this.wrapper.style.position = 'fixed';
-    this.wrapper.style.background = 'rgba(255, 0, 0, 0.5)';
+    this.wrapper.style.background = 'rgba(0, 0, 255, 0.5)';
     this.wrapper.style.display = 'none';
     this.wrapper.style.border = '1px solid blue';
     this.wrapper.style.pointerEvents = 'none';
