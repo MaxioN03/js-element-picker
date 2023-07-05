@@ -1,58 +1,54 @@
 import { DefaultWrapper } from './DefaultWrapper';
-import { PickerWrapper } from './types';
+
+interface ElementPickerProps {
+  picking?: boolean;
+  container?: Element;
+  wrapperDrawer?: (
+    position: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    } | null,
+    target: Element | null
+  ) => void;
+  onTargetChange?: (target: Element) => void;
+  onClick?: (target: Element) => void;
+}
 
 export class ElementPicker {
   private initialized: boolean = false;
   private previousTarget: Element | null = null;
   container: Element | Document | null = null;
-  wrapper: PickerWrapper | null = null;
+  wrapperDrawer: ElementPickerProps['wrapperDrawer'] | null = null;
   onTargetChange: ((target: Element) => void) | null = null;
   onClick: ((target: Element) => void) | null = null;
 
-  constructor({
-    picking,
-    container,
-    wrapper,
-    onTargetChange,
-    onClick,
-  }: {
-    picking?: boolean;
-    container?: Element;
-    wrapper?: PickerWrapper;
-    onTargetChange?: (target: Element) => void;
-    onClick?: (target: Element) => void;
-  }) {
+  constructor(props: ElementPickerProps) {
     if (document.readyState === 'loading') {
       document.addEventListener(
         'DOMContentLoaded',
-        this.initialize.bind(this, {
-          picking,
-          container,
-          wrapper,
-          onTargetChange,
-          onClick,
-        })
+        this.initialize.bind(this, props)
       );
     } else {
-      this.initialize({ picking, container, wrapper, onTargetChange, onClick });
+      this.initialize(props);
     }
   }
 
   private initialize({
     picking,
     container,
-    wrapper,
+    wrapperDrawer,
     onTargetChange,
     onClick,
-  }: {
-    picking?: boolean;
-    container?: Element;
-    wrapper?: PickerWrapper;
-    onTargetChange?: (target: Element) => void;
-    onClick?: (target: Element) => void;
-  }) {
-    this.wrapper = wrapper ?? new DefaultWrapper();
+  }: ElementPickerProps) {
     this.container = container ?? document;
+    if (wrapperDrawer) {
+      this.wrapperDrawer = wrapperDrawer;
+    } else {
+      const defaultWrapper = new DefaultWrapper();
+      this.wrapperDrawer = defaultWrapper.draw.bind(defaultWrapper);
+    }
     if (onTargetChange) {
       this.onTargetChange = onTargetChange;
     }
@@ -76,10 +72,11 @@ export class ElementPicker {
 
     if (target !== this.previousTarget) {
       if (!this.checkElementIfOddGlobal(target)) {
-        this.wrapper?.show({ x, y, width, height }, target);
+        console.log(this.wrapperDrawer);
+        this.wrapperDrawer?.({ x, y, width, height }, target);
         this.onTargetChange?.(target);
       } else {
-        this.wrapper?.hide();
+        this.wrapperDrawer?.(null, null);
       }
 
       this.previousTarget = target;
@@ -131,6 +128,6 @@ export class ElementPicker {
 
     container.removeEventListener('click', this.handleClick, false);
     container.removeEventListener('mousemove', this.handleMouseMove, false);
-    this.wrapper?.hide();
+    this.wrapperDrawer?.(null, null);
   }
 }

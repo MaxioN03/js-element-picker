@@ -1,6 +1,4 @@
-import { PickerWrapper } from './types';
-
-export class DefaultWrapper implements PickerWrapper {
+export class DefaultWrapper {
   wrapper: HTMLElement | null = null;
 
   constructor() {
@@ -18,28 +16,27 @@ export class DefaultWrapper implements PickerWrapper {
     this.wrapper.style.zIndex = '99999';
   }
 
-  show({
-    x,
-    y,
-    width,
-    height,
-  }: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  }) {
-    if (this.wrapper) {
+  draw(
+    position: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    } | null
+  ) {
+    console.log('this.wrapper', this.wrapper);
+    if (!this.wrapper) {
+      return;
+    }
+
+    if (position) {
+      const { x, y, width, height } = position;
       this.wrapper.style.left = `${x}px`;
       this.wrapper.style.top = `${y}px`;
       this.wrapper.style.width = `${width - 1}px`;
       this.wrapper.style.height = `${height - 1}px`;
       this.wrapper.style.display = 'block';
-    }
-  }
-
-  hide() {
-    if (this.wrapper) {
+    } else {
       this.wrapper.style.display = 'none';
     }
   }
