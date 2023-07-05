@@ -26,10 +26,9 @@ export class ElementPicker {
 
   constructor(props: ElementPickerProps) {
     if (document.readyState === 'loading') {
-      document.addEventListener(
-        'DOMContentLoaded',
-        this.initialize.bind(this, props)
-      );
+      document.addEventListener('DOMContentLoaded', () => {
+        this.initialize(props);
+      });
     } else {
       this.initialize(props);
     }
@@ -72,7 +71,6 @@ export class ElementPicker {
 
     if (target !== this.previousTarget) {
       if (!this.checkElementIfOddGlobal(target)) {
-        console.log(this.wrapperDrawer);
         this.wrapperDrawer?.({ x, y, width, height }, target);
         this.onTargetChange?.(target);
       } else {
@@ -117,7 +115,7 @@ export class ElementPicker {
 
     const container = this.container as HTMLElement;
 
-    container.addEventListener('click', this.handleClick);
+    container.addEventListener('click', this.handleClick, false);
     container.addEventListener('mousemove', this.handleMouseMove, false);
   }
 

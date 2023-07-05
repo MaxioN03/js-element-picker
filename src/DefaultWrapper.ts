@@ -24,7 +24,6 @@ export class DefaultWrapper {
       height: number;
     } | null
   ) {
-    console.log('this.wrapper', this.wrapper);
     if (!this.wrapper) {
       return;
     }
