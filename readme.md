@@ -1,7 +1,7 @@
 
 # js-element-picker
 
-JavaScript library for selecting elements on a web page with a mouse
+JavaScript/TypeScript library for selecting elements on a web page.
 
 ## Installation
 
@@ -22,29 +22,27 @@ import { ElementPicker } from 'js-element-picker';
 
 new ElementPicker({
   picking: true,
-  onClick: (target: any) => alert(`Picked element: ${target.tagName}`),
+  onClick: (targets) => alert(`Picked element: ${target.tagName}`),
 });
 ```
 
 ## Constructor arguments
 
- - `picking?: boolean;` - if true, starts picking immediately after initialization. By default `false`
+| Name        | Type        | Default | Description
+|-------------|-------------|---------|-------------|
+| `picking`   | `boolean`   |         |if `true`, starts picking immediately after initialization|
+| `container`   | `Element`   | `document`        |if `container` was passed, picking will be inside of this container|
+| `overlayDrawer`   | `Function`   | Default overlay        |[See description below](#wrapperDrawer-type). If `overlayDrawer` was passed, i will be drawn instead of default overlay on the hovering element|
+| `onTargetChange`   | `onTargetChange?: (target?: Element, event?: MouseEvent) => void;`   |         |callback that will fire every time when hovering target was changed|
+| `onClick`   | `(target: Element) => void;`   |         |callback that fires when user clicks on the picked element|
 
- - `container?: Element;` - if `container` was passed, picking will be runs inside of this container. By default `document`
- - `wrapperDrawer` - a function to draw a wrapper of picking element. if `wrapperDrawer` was passed it will be fired every time when target changed. Please note that it not add your container into the document. All manipulation you do by yourself. Arguments of the function: 
- ```javascript
-wrapperDrawer?: (
-    position: {
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-    } | null,
-    target: Element | null
+### wrapperDrawer type:
+```javascript
+overlayDrawer?: (
+    position?: { x: number; y: number; width: number; height: number } | null,
+    event?: MouseEvent | null
   ) => void;
-``` 
- - `onTargetChange?: (target: Element) => void;` - a callback that fires every time when target was changed
- - `onClick?: (target: Element) => void;` - a callback that fires when user clicks on the picked element
+```
 
 ## Methods:
 

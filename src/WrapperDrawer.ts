@@ -48,7 +48,7 @@ export class WrapperDrawer implements IWrapperDrawer {
     const defaultOverlay = document.createElement('div');
     defaultOverlay.style.width = '100%';
     defaultOverlay.style.height = '100%';
-    defaultOverlay.style.background = 'rgba(255, 0, 0, 0.5)';
+    defaultOverlay.style.background = 'rgba(0, 0, 255, 0.5)';
     return defaultOverlay;
   };
 
