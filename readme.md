@@ -3,8 +3,9 @@
 
 JavaScript/TypeScript library for selecting elements on a web page.
 
-![demo](https://i.imgur.com/mGlNnAo.gif "Demo video")
-
+<p align="center">
+  <img src="https://i.imgur.com/mGlNnAo.gif">
+</p>
 
 
 ## Installation
