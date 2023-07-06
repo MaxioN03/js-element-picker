@@ -32,7 +32,7 @@ new ElementPicker({
 |-------------|-------------|---------|-------------|
 | `picking`   | `boolean`   |         |if `true`, starts picking immediately after initialization|
 | `container`   | `Element`   | `document`        |if `container` was passed, picking will be inside of this container|
-| `overlayDrawer`   | `Function`   | Default overlay        |[See description below](#wrapperDrawer-type). If `overlayDrawer` was passed, i will be drawn instead of default overlay on the hovering element|
+| `overlayDrawer`   | `Function`   | Default overlay        |[See type below](#wrapperdrawer-type). If `overlayDrawer` was passed, it will be drawn instead of default overlay on the hovering element|
 | `onTargetChange`   | `onTargetChange?: (target?: Element, event?: MouseEvent) => void;`   |         |callback that will fire every time when hovering target was changed|
 | `onClick`   | `(target: Element) => void;`   |         |callback that fires when user clicks on the picked element|
 
