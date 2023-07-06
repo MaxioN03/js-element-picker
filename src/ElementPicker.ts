@@ -1,28 +1,24 @@
-import { DefaultWrapper } from './DefaultWrapper';
+import { IWrapperDrawer, WrapperDrawer } from './WrapperDrawer';
 
 interface ElementPickerProps {
   picking?: boolean;
   container?: Element;
-  wrapperDrawer?: (
-    position: {
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-    } | null,
-    target: Element | null
-  ) => void;
-  onTargetChange?: (target: Element) => void;
-  onClick?: (target: Element) => void;
+  overlayDrawer?: (
+    position?: { x: number; y: number; width: number; height: number } | null,
+    event?: MouseEvent
+  ) => Element;
+  onTargetChange?: (target?: Element, event?: MouseEvent) => void;
+  onClick?: (target?: Element, event?: MouseEvent) => void;
 }
 
 export class ElementPicker {
   private initialized: boolean = false;
   private previousTarget: Element | null = null;
+  private wrapperDrawer: IWrapperDrawer | null = null;
   container: Element | Document | null = null;
-  wrapperDrawer: ElementPickerProps['wrapperDrawer'] | null = null;
-  onTargetChange: ((target: Element) => void) | null = null;
-  onClick: ((target: Element) => void) | null = null;
+  onTargetChange: ((target?: Element, event?: MouseEvent) => void) | null =
+    null;
+  onClick: ((target?: Element, event?: MouseEvent) => void) | null = null;
 
   constructor(props: ElementPickerProps) {
     if (document.readyState === 'loading') {
@@ -37,17 +33,12 @@ export class ElementPicker {
   private initialize({
     picking,
     container,
-    wrapperDrawer,
+    overlayDrawer,
     onTargetChange,
     onClick,
   }: ElementPickerProps) {
     this.container = container ?? document;
-    if (wrapperDrawer) {
-      this.wrapperDrawer = wrapperDrawer;
-    } else {
-      const defaultWrapper = new DefaultWrapper();
-      this.wrapperDrawer = defaultWrapper.draw.bind(defaultWrapper);
-    }
+    this.wrapperDrawer = new WrapperDrawer(overlayDrawer);
     if (onTargetChange) {
       this.onTargetChange = onTargetChange;
     }
@@ -58,11 +49,11 @@ export class ElementPicker {
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleClick = this.handleClick.bind(this);
 
-    this.initialized = true;
-
     if (picking) {
       this.startPicking();
     }
+
+    this.initialized = true;
   }
 
   private handleMouseMove(event: MouseEvent) {
@@ -71,10 +62,10 @@ export class ElementPicker {
 
     if (target !== this.previousTarget) {
       if (!this.checkElementIfOddGlobal(target)) {
-        this.wrapperDrawer?.({ x, y, width, height }, target);
-        this.onTargetChange?.(target);
+        this.wrapperDrawer?.draw({ x, y, width, height });
+        this.onTargetChange?.(target, event);
       } else {
-        this.wrapperDrawer?.(null, null);
+        this.wrapperDrawer?.draw(null);
       }
 
       this.previousTarget = target;
@@ -86,7 +77,7 @@ export class ElementPicker {
     event.preventDefault();
 
     this.stopPicking();
-    this.onClick?.(event.target as Element);
+    this.onClick?.(event.target as Element, event);
   }
 
   private waitForInitialization() {
@@ -126,6 +117,6 @@ export class ElementPicker {
 
     container.removeEventListener('click', this.handleClick, false);
     container.removeEventListener('mousemove', this.handleMouseMove, false);
-    this.wrapperDrawer?.(null, null);
+    this.wrapperDrawer?.draw(null);
   }
 }
