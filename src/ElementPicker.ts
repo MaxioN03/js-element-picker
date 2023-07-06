@@ -5,7 +5,7 @@ interface ElementPickerProps {
   container?: Element;
   overlayDrawer?: (
     position?: { x: number; y: number; width: number; height: number } | null,
-    event?: MouseEvent
+    event?: MouseEvent | null
   ) => Element;
   onTargetChange?: (target?: Element, event?: MouseEvent) => void;
   onClick?: (target?: Element, event?: MouseEvent) => void;
@@ -62,10 +62,10 @@ export class ElementPicker {
 
     if (target !== this.previousTarget) {
       if (!this.checkElementIfOddGlobal(target)) {
-        this.wrapperDrawer?.draw({ x, y, width, height });
+        this.wrapperDrawer?.draw({ x, y, width, height }, event);
         this.onTargetChange?.(target, event);
       } else {
-        this.wrapperDrawer?.draw(null);
+        this.wrapperDrawer?.draw(null, null);
       }
 
       this.previousTarget = target;
@@ -117,6 +117,6 @@ export class ElementPicker {
 
     container.removeEventListener('click', this.handleClick, false);
     container.removeEventListener('mousemove', this.handleMouseMove, false);
-    this.wrapperDrawer?.draw(null);
+    this.wrapperDrawer?.draw(null, null);
   }
 }
