@@ -3,6 +3,10 @@
 
 JavaScript/TypeScript library for selecting elements on a web page.
 
+![demo](https://i.imgur.com/mGlNnAo.gif "Demo video")
+
+
+
 ## Installation
 
 Install with `npm`:
