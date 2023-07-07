@@ -20,7 +20,7 @@ export class ElementPicker {
     null;
   onClick: ((target?: Element, event?: MouseEvent) => void) | null = null;
 
-  constructor(props: ElementPickerProps) {
+  constructor(props?: ElementPickerProps) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
         this.initialize(props);
@@ -30,13 +30,9 @@ export class ElementPicker {
     }
   }
 
-  private initialize({
-    picking,
-    container,
-    overlayDrawer,
-    onTargetChange,
-    onClick,
-  }: ElementPickerProps) {
+  private initialize(props?: ElementPickerProps) {
+    const { picking, container, overlayDrawer, onTargetChange, onClick } =
+      props ?? {};
     this.container = container ?? document;
     this.wrapperDrawer = new WrapperDrawer(overlayDrawer);
     if (onTargetChange) {
