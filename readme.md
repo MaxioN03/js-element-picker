@@ -27,7 +27,7 @@ import { ElementPicker } from 'js-element-picker';
 
 new ElementPicker({
   picking: true,
-  onClick: (targets) => alert(`Picked element: ${target.tagName}`),
+  onClick: (target) => alert(`Picked element: ${target.tagName}`),
 });
 ```
 
@@ -37,16 +37,16 @@ new ElementPicker({
 |-------------|-------------|---------|-------------|
 | `picking`   | `boolean`   |         |if `true`, starts picking immediately after initialization|
 | `container`   | `Element`   | `document`        |if `container` was passed, picking will be inside of this container|
-| `overlayDrawer`   | `Function`   | Default overlay        |[See type below](#wrapperdrawer-type). If `overlayDrawer` was passed, it will be drawn instead of default overlay on the hovering element|
+| `overlayDrawer`   | `Function`   | Default overlay        |[See type below](#overlaydrawer-type). If `overlayDrawer` was passed, it will be drawn instead of default overlay on the hovering element|
 | `onTargetChange`   | `onTargetChange?: (target?: Element, event?: MouseEvent) => void;`   |         |callback that will fire every time when hovering target was changed|
 | `onClick`   | `(target: Element) => void;`   |         |callback that fires when user clicks on the picked element|
 
-### wrapperDrawer type:
+### overlayDrawer type:
 ```javascript
 overlayDrawer?: (
     position?: { x: number; y: number; width: number; height: number } | null,
     event?: MouseEvent | null
-  ) => void;
+  ) => Element;
 ```
 
 ## Methods:
