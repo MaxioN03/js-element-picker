@@ -1,7 +1,7 @@
 {
   "name": "js-element-picker",
   "version": "0.1.0",
-  "description": "js module to pick elements on the web page with customization",
+  "description": "JavaScript and TypeScript library for selecting elements on a web page.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -10,8 +10,22 @@
     "build": "tsc",
     "prepare": "npm run build"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MaxioN03/js-element-picker"
+  },
+  "keywords": [
+    "element",
+    "pick",
+    "picker",
+    "web",
+    "browser",
+    "DOM",
+    "JavaScript",
+    "TypeScript",
+    "customization"
+  ],
+  "author": "maxion03",
   "license": "ISC",
   "dependencies": {
     "nodemon": "^2.0.22"
