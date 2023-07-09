@@ -1,6 +1,6 @@
 {
   "name": "js-element-picker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JavaScript and TypeScript library for selecting elements on a web page.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,6 +14,10 @@
     "type": "git",
     "url": "https://github.com/MaxioN03/js-element-picker"
   },
+  "bugs": {
+    "url": "https://github.com/MaxioN03/js-element-picker/issues"
+  },
+  "homepage": "https://github.com/MaxioN03/js-element-picker#readme",
   "keywords": [
     "element",
     "pick",
