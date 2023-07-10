@@ -4,8 +4,8 @@ interface ElementPickerProps {
   picking?: boolean;
   container?: Element;
   overlayDrawer?: (
-    position?: { x: number; y: number; width: number; height: number } | null,
-    event?: MouseEvent | null
+    position: { x: number; y: number; width: number; height: number } | null,
+    event: MouseEvent | null
   ) => Element;
   onTargetChange?: (target?: Element, event?: MouseEvent) => void;
   onClick?: (target?: Element, event?: MouseEvent) => void;

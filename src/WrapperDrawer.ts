@@ -1,13 +1,13 @@
 export interface IWrapperDrawer {
   wrapper: HTMLElement | null;
   draw: (
-    position?: {
+    position: {
       x: number;
       y: number;
       width: number;
       height: number;
     } | null,
-    event?: MouseEvent | null
+    event: MouseEvent | null
   ) => void;
 }
 
@@ -15,20 +15,20 @@ export class WrapperDrawer implements IWrapperDrawer {
   wrapper: HTMLElement | null = null;
   overlayDrawer?:
     | ((
-        position?: {
+        position: {
           x: number;
           y: number;
           width: number;
           height: number;
         } | null,
-        event?: MouseEvent | null
+        event: MouseEvent | null
       ) => Element)
     | null = null;
 
   constructor(
     overlayDrawer?: (
-      position?: { x: number; y: number; width: number; height: number } | null,
-      event?: MouseEvent | null
+      position: { x: number; y: number; width: number; height: number } | null,
+      event: MouseEvent | null
     ) => Element
   ) {
     this.initialize();
@@ -53,13 +53,13 @@ export class WrapperDrawer implements IWrapperDrawer {
   };
 
   draw(
-    position?: {
+    position: {
       x: number;
       y: number;
       width: number;
       height: number;
     } | null,
-    event?: MouseEvent | null
+    event: MouseEvent | null
   ) {
     if (!this.wrapper) {
       return;
