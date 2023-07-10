@@ -72,7 +72,6 @@ export class ElementPicker {
     event.stopPropagation();
     event.preventDefault();
 
-    this.stopPicking();
     this.onClick?.(event.target as Element, event);
   }
 
