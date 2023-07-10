@@ -13,7 +13,7 @@ export interface IWrapperDrawer {
 
 export class WrapperDrawer implements IWrapperDrawer {
   wrapper: HTMLElement | null = null;
-  overlayDrawer?:
+  overlayDrawer:
     | ((
         position: {
           x: number;

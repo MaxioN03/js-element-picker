@@ -7,8 +7,8 @@ interface ElementPickerProps {
     position: { x: number; y: number; width: number; height: number } | null,
     event: MouseEvent | null
   ) => Element;
-  onTargetChange?: (target?: Element, event?: MouseEvent) => void;
-  onClick?: (target?: Element, event?: MouseEvent) => void;
+  onTargetChange?: (target: Element, event: MouseEvent) => void;
+  onClick?: (target: Element, event: MouseEvent) => void;
 }
 
 export class ElementPicker {
@@ -16,9 +16,8 @@ export class ElementPicker {
   private previousTarget: Element | null = null;
   private wrapperDrawer: IWrapperDrawer | null = null;
   container: Element | Document | null = null;
-  onTargetChange: ((target?: Element, event?: MouseEvent) => void) | null =
-    null;
-  onClick: ((target?: Element, event?: MouseEvent) => void) | null = null;
+  onTargetChange: ((target: Element, event: MouseEvent) => void) | null = null;
+  onClick: ((target: Element, event: MouseEvent) => void) | null = null;
 
   constructor(props?: ElementPickerProps) {
     if (document.readyState === 'loading') {
