@@ -20,9 +20,9 @@ Or `yarn`:
 yarn add js-element-picker
 ```
 
-<!-- ## React wrapper
+## React wrapper
 
-For this library there is a **React** wrapper `react-js-element-picker`, which you can [see here](https://www.npmjs.com/package/react-js-element-picker) -->
+For this library there is a **React** wrapper `react-js-element-picker`, which you can [see here](https://www.npmjs.com/package/react-js-element-picker)
 
 ## Simple example
 
