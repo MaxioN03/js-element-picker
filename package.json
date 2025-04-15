@@ -32,8 +32,8 @@
   "author": "maxion03",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.22",
-    "tsc-watch": "^6.0.4",
-    "typescript": "^5.1.6"
+    "nodemon": "^3.1.9",
+    "tsc-watch": "^6.2.1",
+    "typescript": "^5.8.3"
   }
 }
