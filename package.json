@@ -1,6 +1,6 @@
 {
   "name": "js-element-picker",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "JavaScript and TypeScript library for selecting elements on a web page.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
