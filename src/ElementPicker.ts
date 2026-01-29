@@ -1,25 +1,15 @@
+import type { ElementPickerOptions, OnClick, OnTargetChange } from './types';
 import { IWrapperDrawer, WrapperDrawer } from './WrapperDrawer';
-
-interface ElementPickerProps {
-  picking?: boolean;
-  container?: Element;
-  overlayDrawer?: (
-    position: { x: number; y: number; width: number; height: number } | null,
-    event: MouseEvent | null
-  ) => Element;
-  onTargetChange?: (target: Element, event: MouseEvent) => void;
-  onClick?: (target: Element, event: MouseEvent) => void;
-}
 
 export class ElementPicker {
   private initialized: boolean = false;
   private previousTarget: Element | null = null;
   private wrapperDrawer: IWrapperDrawer | null = null;
   container: Element | Document | null = null;
-  onTargetChange: ((target: Element, event: MouseEvent) => void) | null = null;
-  onClick: ((target: Element, event: MouseEvent) => void) | null = null;
+  onTargetChange: OnTargetChange | null = null;
+  onClick: OnClick | null = null;
 
-  constructor(props?: ElementPickerProps) {
+  constructor(props?: ElementPickerOptions) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
         this.initialize(props);
@@ -29,7 +19,7 @@ export class ElementPicker {
     }
   }
 
-  private initialize(props?: ElementPickerProps) {
+  private initialize(props?: ElementPickerOptions) {
     const { picking, container, overlayDrawer, onTargetChange, onClick } =
       props ?? {};
     this.container = container ?? document;

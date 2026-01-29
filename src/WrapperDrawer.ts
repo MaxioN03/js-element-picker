@@ -1,36 +1,15 @@
+import type { OverlayDrawer, OverlayPosition } from './types';
+
 export interface IWrapperDrawer {
   wrapper: HTMLElement | null;
-  draw: (
-    position: {
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-    } | null,
-    event: MouseEvent | null
-  ) => void;
+  draw: (position: OverlayPosition | null, event: MouseEvent | null) => void;
 }
 
 export class WrapperDrawer implements IWrapperDrawer {
   wrapper: HTMLElement | null = null;
-  overlayDrawer:
-    | ((
-        position: {
-          x: number;
-          y: number;
-          width: number;
-          height: number;
-        } | null,
-        event: MouseEvent | null
-      ) => Element)
-    | null = null;
+  overlayDrawer: OverlayDrawer | null = null;
 
-  constructor(
-    overlayDrawer?: (
-      position: { x: number; y: number; width: number; height: number } | null,
-      event: MouseEvent | null
-    ) => Element
-  ) {
+  constructor(overlayDrawer?: OverlayDrawer) {
     this.initialize();
     document.body.appendChild(this.wrapper as Node);
     this.overlayDrawer = overlayDrawer ?? this.defaultOverlayDrawer;
@@ -53,15 +32,7 @@ export class WrapperDrawer implements IWrapperDrawer {
     return defaultOverlay;
   };
 
-  draw(
-    position: {
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-    } | null,
-    event: MouseEvent | null
-  ) {
+  draw(position: OverlayPosition | null, event: MouseEvent | null) {
     if (!this.wrapper) {
       return;
     }
