@@ -71,4 +71,10 @@ export interface ElementPickerOptions {
    * Called when the user clicks on the currently hovered element (element selected).
    */
   onClick?: OnClick;
+
+  /**
+   * Optional predicate to exclude elements from picking.
+   * Return `false` for elements that should be ignored (no highlight, no callbacks).
+   */
+  filter?: (element: Element) => boolean;
 }

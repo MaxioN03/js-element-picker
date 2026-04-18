@@ -44,6 +44,7 @@ new ElementPicker({
 | `overlayDrawer`   | `Function`   | Default overlay        |[See type below](#overlaydrawer-type). If `overlayDrawer` was passed, it will be drawn instead of default overlay on the hovering element|
 | `onTargetChange`   | `(target?: Element, event?: MouseEvent) => void;`   |         |callback that will fire every time when hovering target was changed|
 | `onClick`   | `(target: Element, event?: MouseEvent) => void;`   |         |callback that fires when user clicks on the picked element|
+| `filter`   | `(element: Element) => boolean`   |         |if provided, only elements for which the function returns `true` will be highlighted and trigger callbacks|
 
 ### overlayDrawer type:
 ```javascript

@@ -10,6 +10,7 @@ export class ElementPicker {
   container: Element | Document | null = null;
   onTargetChange: OnTargetChange | null = null;
   onClick: OnClick | null = null;
+  private filter: ((element: Element) => boolean) | null = null;
 
   constructor(props?: ElementPickerOptions) {
     if (document.readyState === 'loading') {
@@ -22,7 +23,7 @@ export class ElementPicker {
   }
 
   private initialize(props?: ElementPickerOptions) {
-    const { picking, container, overlayDrawer, onTargetChange, onClick } =
+    const { picking, container, overlayDrawer, onTargetChange, onClick, filter } =
       props ?? {};
     this.container = container ?? document;
     this.wrapperDrawer = new WrapperDrawer(overlayDrawer);
@@ -31,6 +32,9 @@ export class ElementPicker {
     }
     if (onClick) {
       this.onClick = onClick;
+    }
+    if (filter) {
+      this.filter = filter;
     }
 
     this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -48,7 +52,7 @@ export class ElementPicker {
     const { x, y, width, height } = target?.getBoundingClientRect();
 
     if (target !== this.previousTarget) {
-      if (!this.checkElementIfOddGlobal(target)) {
+      if (!this.checkElementIfOddGlobal(target) && this.filter?.(target) !== false) {
         this.wrapperDrawer?.draw({ x, y, width, height }, event);
         this.onTargetChange?.(target, event);
       } else {

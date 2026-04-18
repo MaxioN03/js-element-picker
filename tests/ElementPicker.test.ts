@@ -298,6 +298,46 @@ describe('ElementPicker', () => {
     });
   });
 
+  describe('filter option', () => {
+    it('should not call onTargetChange for elements where filter returns false', async () => {
+      const onTargetChange = jest.fn();
+      new ElementPicker({
+        picking: true,
+        onTargetChange,
+        filter: (el) => el.id !== 'target',
+      });
+      await new Promise((res) => setTimeout(res, 100));
+      const target = document.getElementById('target');
+      target?.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+      expect(onTargetChange).not.toHaveBeenCalled();
+    });
+
+    it('should call onTargetChange for elements where filter returns true', async () => {
+      const onTargetChange = jest.fn();
+      new ElementPicker({
+        picking: true,
+        onTargetChange,
+        filter: (el) => el.id === 'target',
+      });
+      await new Promise((res) => setTimeout(res, 100));
+      const target = document.getElementById('target');
+      target?.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+      expect(onTargetChange).toHaveBeenCalled();
+    });
+
+    it('should not show overlay for filtered-out elements', async () => {
+      new ElementPicker({ picking: true, filter: () => false });
+      await new Promise((res) => setTimeout(res, 100));
+      const target = document.getElementById('target');
+      target?.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+      const wrappers = document.querySelectorAll<HTMLElement>('body > div');
+      const overlayWrapper = Array.from(wrappers).find(
+        (el) => el.style.zIndex === '99999'
+      );
+      expect(overlayWrapper?.style.display).toBe('none');
+    });
+  });
+
   describe('isPicking', () => {
     it('should be false initially when picking option is not set', async () => {
       const picker = new ElementPicker({});
