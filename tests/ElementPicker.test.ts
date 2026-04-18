@@ -298,6 +298,42 @@ describe('ElementPicker', () => {
     });
   });
 
+  describe('Escape key + onCancel', () => {
+    it('should stop picking when Escape is pressed', async () => {
+      const picker = new ElementPicker({ picking: true });
+      await new Promise((res) => setTimeout(res, 100));
+      expect(picker.isPicking).toBe(true);
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await new Promise((res) => setTimeout(res, 100));
+      expect(picker.isPicking).toBe(false);
+    });
+
+    it('should call onCancel when Escape is pressed', async () => {
+      const onCancel = jest.fn();
+      new ElementPicker({ picking: true, onCancel });
+      await new Promise((res) => setTimeout(res, 100));
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      expect(onCancel).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not call onCancel for other keys', async () => {
+      const onCancel = jest.fn();
+      new ElementPicker({ picking: true, onCancel });
+      await new Promise((res) => setTimeout(res, 100));
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      expect(onCancel).not.toHaveBeenCalled();
+    });
+
+    it('should not respond to Escape after stopPicking', async () => {
+      const onCancel = jest.fn();
+      const picker = new ElementPicker({ picking: true, onCancel });
+      await new Promise((res) => setTimeout(res, 100));
+      await picker.stopPicking();
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      expect(onCancel).not.toHaveBeenCalled();
+    });
+  });
+
   describe('filter option', () => {
     it('should not call onTargetChange for elements where filter returns false', async () => {
       const onTargetChange = jest.fn();

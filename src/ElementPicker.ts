@@ -11,6 +11,7 @@ export class ElementPicker {
   onTargetChange: OnTargetChange | null = null;
   onClick: OnClick | null = null;
   private filter: ((element: Element) => boolean) | null = null;
+  private onCancel: (() => void) | null = null;
 
   constructor(props?: ElementPickerOptions) {
     if (document.readyState === 'loading') {
@@ -23,7 +24,7 @@ export class ElementPicker {
   }
 
   private initialize(props?: ElementPickerOptions) {
-    const { picking, container, overlayDrawer, onTargetChange, onClick, filter } =
+    const { picking, container, overlayDrawer, onTargetChange, onClick, filter, onCancel } =
       props ?? {};
     this.container = container ?? document;
     this.wrapperDrawer = new WrapperDrawer(overlayDrawer);
@@ -36,9 +37,13 @@ export class ElementPicker {
     if (filter) {
       this.filter = filter;
     }
+    if (onCancel) {
+      this.onCancel = onCancel;
+    }
 
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
 
     if (picking) {
       this.startPicking();
@@ -60,6 +65,13 @@ export class ElementPicker {
       }
 
       this.previousTarget = target;
+    }
+  }
+
+  private handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      this.stopPicking();
+      this.onCancel?.();
     }
   }
 
@@ -103,6 +115,7 @@ export class ElementPicker {
 
     container.addEventListener('click', this.handleClick, false);
     container.addEventListener('mousemove', this.handleMouseMove, false);
+    document.addEventListener('keydown', this.handleKeyDown, false);
     this._isPicking = true;
   }
 
@@ -114,6 +127,7 @@ export class ElementPicker {
 
     container.removeEventListener('click', this.handleClick, false);
     container.removeEventListener('mousemove', this.handleMouseMove, false);
+    document.removeEventListener('keydown', this.handleKeyDown, false);
     this.wrapperDrawer?.draw(null, null);
     this._isPicking = false;
   }

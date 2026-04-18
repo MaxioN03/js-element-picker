@@ -77,4 +77,9 @@ export interface ElementPickerOptions {
    * Return `false` for elements that should be ignored (no highlight, no callbacks).
    */
   filter?: (element: Element) => boolean;
+
+  /**
+   * Called when picking is cancelled by pressing the Escape key.
+   */
+  onCancel?: () => void;
 }
