@@ -298,6 +298,43 @@ describe('ElementPicker', () => {
     });
   });
 
+  describe('scroll & resize overlay update', () => {
+    it('should redraw the overlay on scroll when an element is hovered', async () => {
+      const overlayDrawer = jest.fn(() => document.createElement('div'));
+      new ElementPicker({ picking: true, overlayDrawer });
+      await new Promise((res) => setTimeout(res, 100));
+
+      const target = document.getElementById('target')!;
+      target.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+      const callsAfterHover = overlayDrawer.mock.calls.length;
+
+      window.dispatchEvent(new Event('scroll'));
+      expect(overlayDrawer.mock.calls.length).toBeGreaterThan(callsAfterHover);
+    });
+
+    it('should redraw the overlay on resize when an element is hovered', async () => {
+      const overlayDrawer = jest.fn(() => document.createElement('div'));
+      new ElementPicker({ picking: true, overlayDrawer });
+      await new Promise((res) => setTimeout(res, 100));
+
+      const target = document.getElementById('target')!;
+      target.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+      const callsAfterHover = overlayDrawer.mock.calls.length;
+
+      window.dispatchEvent(new Event('resize'));
+      expect(overlayDrawer.mock.calls.length).toBeGreaterThan(callsAfterHover);
+    });
+
+    it('should not redraw on scroll if no element was hovered yet', async () => {
+      const overlayDrawer = jest.fn(() => document.createElement('div'));
+      new ElementPicker({ picking: true, overlayDrawer });
+      await new Promise((res) => setTimeout(res, 100));
+
+      window.dispatchEvent(new Event('scroll'));
+      expect(overlayDrawer).not.toHaveBeenCalled();
+    });
+  });
+
   describe('Escape key + onCancel', () => {
     it('should stop picking when Escape is pressed', async () => {
       const picker = new ElementPicker({ picking: true });

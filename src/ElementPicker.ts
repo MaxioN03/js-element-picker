@@ -44,6 +44,7 @@ export class ElementPicker {
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleScrollResize = this.handleScrollResize.bind(this);
 
     if (picking) {
       this.startPicking();
@@ -66,6 +67,12 @@ export class ElementPicker {
 
       this.previousTarget = target;
     }
+  }
+
+  private handleScrollResize() {
+    if (!this.previousTarget) return;
+    const { x, y, width, height } = this.previousTarget.getBoundingClientRect();
+    this.wrapperDrawer?.draw({ x, y, width, height }, null);
   }
 
   private handleKeyDown(event: KeyboardEvent) {
@@ -116,6 +123,8 @@ export class ElementPicker {
     container.addEventListener('click', this.handleClick, false);
     container.addEventListener('mousemove', this.handleMouseMove, false);
     document.addEventListener('keydown', this.handleKeyDown, false);
+    window.addEventListener('scroll', this.handleScrollResize, true);
+    window.addEventListener('resize', this.handleScrollResize, false);
     this._isPicking = true;
   }
 
@@ -128,6 +137,8 @@ export class ElementPicker {
     container.removeEventListener('click', this.handleClick, false);
     container.removeEventListener('mousemove', this.handleMouseMove, false);
     document.removeEventListener('keydown', this.handleKeyDown, false);
+    window.removeEventListener('scroll', this.handleScrollResize, true);
+    window.removeEventListener('resize', this.handleScrollResize, false);
     this.wrapperDrawer?.draw(null, null);
     this._isPicking = false;
   }

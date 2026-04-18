@@ -47,6 +47,8 @@ new ElementPicker({
 | `filter`   | `(element: Element) => boolean`   |         |if provided, only elements for which the function returns `true` will be highlighted and trigger callbacks|
 | `onCancel`   | `() => void`   |         |callback fired when the user presses the Escape key to cancel picking; picking is stopped automatically|
 
+> **Scroll & resize:** While picking is active, the overlay automatically repositions itself when the page is scrolled or the window is resized.
+
 ### overlayDrawer type:
 ```javascript
 overlayDrawer?: (
