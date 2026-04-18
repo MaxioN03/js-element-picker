@@ -53,6 +53,10 @@ overlayDrawer?: (
   ) => Element;
 ```
 
+## Properties:
+
+ - `isPicking` *(readonly boolean)* - `true` while the picker is active, `false` otherwise
+
 ## Methods:
 
  - `startPicking()` - start picking elements

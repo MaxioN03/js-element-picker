@@ -298,6 +298,29 @@ describe('ElementPicker', () => {
     });
   });
 
+  describe('isPicking', () => {
+    it('should be false initially when picking option is not set', async () => {
+      const picker = new ElementPicker({});
+      await new Promise((res) => setTimeout(res, 100));
+      expect(picker.isPicking).toBe(false);
+    });
+
+    it('should be true after startPicking and false after stopPicking', async () => {
+      const picker = new ElementPicker({});
+      await new Promise((res) => setTimeout(res, 100));
+      await picker.startPicking();
+      expect(picker.isPicking).toBe(true);
+      await picker.stopPicking();
+      expect(picker.isPicking).toBe(false);
+    });
+
+    it('should be true when picking option is true', async () => {
+      const picker = new ElementPicker({ picking: true });
+      await new Promise((res) => setTimeout(res, 100));
+      expect(picker.isPicking).toBe(true);
+    });
+  });
+
   describe('destroy()', () => {
     it('should remove the overlay wrapper from the DOM', async () => {
       const picker = new ElementPicker({ picking: true });

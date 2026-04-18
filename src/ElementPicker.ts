@@ -4,6 +4,7 @@ import { IWrapperDrawer, WrapperDrawer } from './WrapperDrawer';
 export class ElementPicker {
   private initialized: boolean = false;
   private destroyed: boolean = false;
+  private _isPicking: boolean = false;
   private previousTarget: Element | null = null;
   private wrapperDrawer: IWrapperDrawer | null = null;
   container: Element | Document | null = null;
@@ -86,6 +87,10 @@ export class ElementPicker {
     return element === document.documentElement || element === document.body;
   }
 
+  get isPicking(): boolean {
+    return this._isPicking;
+  }
+
   async startPicking() {
     if (this.destroyed) return;
     await this.waitForInitialization();
@@ -94,6 +99,7 @@ export class ElementPicker {
 
     container.addEventListener('click', this.handleClick, false);
     container.addEventListener('mousemove', this.handleMouseMove, false);
+    this._isPicking = true;
   }
 
   async stopPicking() {
@@ -105,6 +111,7 @@ export class ElementPicker {
     container.removeEventListener('click', this.handleClick, false);
     container.removeEventListener('mousemove', this.handleMouseMove, false);
     this.wrapperDrawer?.draw(null, null);
+    this._isPicking = false;
   }
 
   async destroy() {
