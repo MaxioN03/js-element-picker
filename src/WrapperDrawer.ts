@@ -3,6 +3,7 @@ import type { OverlayDrawer, OverlayPosition } from './types';
 export interface IWrapperDrawer {
   wrapper: HTMLElement | null;
   draw: (position: OverlayPosition | null, event: MouseEvent | null) => void;
+  destroy: () => void;
 }
 
 export class WrapperDrawer implements IWrapperDrawer {
@@ -31,6 +32,11 @@ export class WrapperDrawer implements IWrapperDrawer {
     defaultOverlay.style.background = 'rgba(0, 0, 255, 0.5)';
     return defaultOverlay;
   };
+
+  destroy() {
+    this.wrapper?.remove();
+    this.wrapper = null;
+  }
 
   draw(position: OverlayPosition | null, event: MouseEvent | null) {
     if (!this.wrapper) {

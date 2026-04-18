@@ -57,6 +57,7 @@ overlayDrawer?: (
 
  - `startPicking()` - start picking elements
  - `stopPicking()` - stop picking elements
+ - `destroy()` - permanently tear down the picker: stops picking, removes the overlay element from the DOM, and prevents any further use
 
 ## Examples
 

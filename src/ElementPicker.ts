@@ -3,6 +3,7 @@ import { IWrapperDrawer, WrapperDrawer } from './WrapperDrawer';
 
 export class ElementPicker {
   private initialized: boolean = false;
+  private destroyed: boolean = false;
   private previousTarget: Element | null = null;
   private wrapperDrawer: IWrapperDrawer | null = null;
   container: Element | Document | null = null;
@@ -86,6 +87,7 @@ export class ElementPicker {
   }
 
   async startPicking() {
+    if (this.destroyed) return;
     await this.waitForInitialization();
 
     const container = this.container as HTMLElement;
@@ -95,6 +97,7 @@ export class ElementPicker {
   }
 
   async stopPicking() {
+    if (this.destroyed) return;
     await this.waitForInitialization();
 
     const container = this.container as HTMLElement;
@@ -102,5 +105,12 @@ export class ElementPicker {
     container.removeEventListener('click', this.handleClick, false);
     container.removeEventListener('mousemove', this.handleMouseMove, false);
     this.wrapperDrawer?.draw(null, null);
+  }
+
+  async destroy() {
+    await this.stopPicking();
+    this.wrapperDrawer?.destroy();
+    this.wrapperDrawer = null;
+    this.destroyed = true;
   }
 }

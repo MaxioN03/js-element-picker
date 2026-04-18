@@ -298,6 +298,35 @@ describe('ElementPicker', () => {
     });
   });
 
+  describe('destroy()', () => {
+    it('should remove the overlay wrapper from the DOM', async () => {
+      const picker = new ElementPicker({ picking: true });
+      await new Promise((res) => setTimeout(res, 100));
+      await picker.destroy();
+      expect(document.querySelector('[style*="z-index: 99999"]')).toBeNull();
+    });
+
+    it('should stop responding to mousemove after destroy', async () => {
+      const onTargetChange = jest.fn();
+      const picker = new ElementPicker({ picking: true, onTargetChange });
+      await new Promise((res) => setTimeout(res, 100));
+      await picker.destroy();
+      const target = document.getElementById('target');
+      target?.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+      expect(onTargetChange).not.toHaveBeenCalled();
+    });
+
+    it('should stop responding to clicks after destroy', async () => {
+      const onClick = jest.fn();
+      const picker = new ElementPicker({ picking: true, onClick });
+      await new Promise((res) => setTimeout(res, 100));
+      await picker.destroy();
+      const target = document.getElementById('target');
+      target?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(onClick).not.toHaveBeenCalled();
+    });
+  });
+
   it('should call onTargetChange on mousemove if picking argument is false but startPicking method is fired', async () => {
     const onTargetChange = jest.fn();
     const picker = new ElementPicker({
